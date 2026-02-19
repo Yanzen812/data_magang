@@ -1,0 +1,141 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    background-color: #f9f9f9;
+    width: 400px;
+    padding-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    border: 1px solid #ddd;
+}
+
+.top-border {
+    height: 4px;
+    background-color: #5d29d6;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+}
+
+header h1 {
+    font-size: 28px;
+    text-decoration: underline;
+    margin-bottom: 20px;
+}
+
+.divider {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 0;
+    background-color: #eeeeee;
+    font-size: 12px;
+    color: #333;
+}
+
+form {
+    padding: 30px;
+}
+
+.input-group {
+    display: flex;
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.input-group input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-right: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.icon-box {
+    background-color: #333;
+    color: white;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #333;
+}
+
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Custom Checkbox */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkmark {
+    height: 35px;
+    width: 35px;
+    border: 1px solid #5d29d6;
+    display: inline-block;
+    margin-right: 10px;
+    background-color: white;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #5d29d6;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z'/%3E%3C/svg%3E");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.login-btn {
+    background-color: #5d29d6;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.footer-links {
+    padding: 0 30px;
+}
+
+.footer-links a {
+    color: #4a69bd;
+    text-decoration: none;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.footer-links p {
+    font-size: 13px;
+    color: #4a69bd;
+}
