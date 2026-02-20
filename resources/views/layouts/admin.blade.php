@@ -13,10 +13,10 @@
             <a href="{{ route('dashboard') }}" class="block p-3 hover:bg-white/10 rounded">Dashboard</a> <hr class="border-white/20 mb-4">
             <a href="{{ route('siswa') }}" class="block p-3 hover:bg-white/10 rounded">Data Siswa</a> <hr class="border-white/20 mb-4">
             <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Data Absensi</a> <hr class="border-white/20 mb-4">
-            <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Data Kegiatan</a> <hr class="border-white/20 mb-4">
-            <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Data Guru Pembimbing</a> <hr class="border-white/20 mb-4">
-            <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Surat Pengantar</a><hr class="border-white/20 mb-4">
-            <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Penilaian</a>
+            <a href="{{ route('kegiatan') }}" class="block p-3 hover:bg-white/10 rounded">Data Kegiatan</a> <hr class="border-white/20 mb-4">
+            <a href="{{ route('guru') }}" class="block p-3 hover:bg-white/10 rounded">Data Guru Pembimbing</a> <hr class="border-white/20 mb-4">
+            <a href="{{ route('surat') }}" class="block p-3 hover:bg-white/10 rounded">Surat Pengantar</a><hr class="border-white/20 mb-4">
+            <a href="{{ route('penilaian') }}" class="block p-3 hover:bg-white/10 rounded">Penilaian</a>
         </nav>
         {{-- <div class="absolute bottom-8 left-0 w-full px-4"> --}}
         <hr class="border-white/20 mb-4"> <a href="{{ route('absensi') }}" class="block p-3 hover:bg-white/10 rounded">Logout

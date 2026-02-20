@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/data_siswa.css') }}">
+<link rel="stylesheet" href="{{ asset('css/penilaian.css') }}">
 
 <div class="content">
 
     <div class="search-panel">
-        <h3>DATA SISWA MAGANG</h3>
+        <h3>DATA PENILAIAN MAGANG</h3>
         <div class="top-bar">
             <input type="text" placeholder="Pencarian Nama">
             <input type="text" placeholder="Cari Sekolah atau Kampus">
@@ -29,11 +29,8 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Sekolah Kampus</th>
-                        <th>Jurusan</th>
-                        <th>Periode</th>
-                        <th>Kelompok</th>
-                        <th>Status</th>
-                        <th>Kontak</th>
+                        <th>Guru Pembimbing</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,10 +40,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td style="text-align: center;"><button class="btn-green">Nilai</button></td>
                     </tr>
                 </tbody>
             </table>

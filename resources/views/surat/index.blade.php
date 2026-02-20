@@ -6,7 +6,7 @@
 <div class="content">
 
     <div class="search-panel">
-        <h3>DATA SISWA MAGANG</h3>
+        <h3>SURAT PENGANTAR</h3>
         <div class="top-bar">
             <input type="text" placeholder="Pencarian Nama">
             <input type="text" placeholder="Cari Sekolah atau Kampus">
@@ -16,30 +16,23 @@
 
     <div class="data-panel">
         <div class="action-bar">
-            <button class="btn-green">Tambah Data</button>
-            <button class="btn-red">Hapus Data</button>
-            <button class="btn-yellow">Edit Data</button>
         </div>
 
         <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th></th>
                         <th>No</th>
                         <th>Nama</th>
                         <th>Sekolah Kampus</th>
-                        <th>Jurusan</th>
-                        <th>Periode</th>
-                        <th>Kelompok</th>
-                        <th>Status</th>
                         <th>Kontak</th>
+                        <th>Jurusan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="checkbox"></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
