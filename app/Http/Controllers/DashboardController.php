@@ -13,7 +13,7 @@ class DashboardController extends Controller
         return view('dashboard', [
 
             // CARD
-            'total_siswa' => DB::table('siswa')->count(),
+            'total_siswa' => DB::table('users')->count(),
 
             'total_hadir' => DB::table('absensi')
                 ->where('tanggal', $today)

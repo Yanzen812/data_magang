@@ -18,17 +18,27 @@
                 <span>Login untuk masuk</span>
             </div>
         </header>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-        <form>
+        <form action="{{ route('login_proses') }}" method="POST">
+            @csrf
             <div class="input-group">
-                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Nama Lengkap" name="nama" value="{{ old('nama') }}" required>
                 <div class="icon-box">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-user"></i>
                 </div>
             </div>
 
             <div class="input-group">
-                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Password" name="password" required>
                 <div class="icon-box">
                     <i class="fas fa-lock"></i>
                 </div>
@@ -44,10 +54,10 @@
             </div>
         </form>
 
-        <div class="footer-links">
-            <a href="#">Lupa kata sandi</a>
+        {{-- <div class="footer-links">
+            <a href="#">Lupa kata sandi</a> --}}
             {{-- <a href="#">Belum punya akun?Registrasi</a> --}}
-        </div>
+        {{-- </div> --}}
     </div>
 
 </body>

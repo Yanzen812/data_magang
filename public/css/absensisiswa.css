@@ -1,0 +1,145 @@
+/* ===== Wrapper Background ===== */
+.absensi-wrapper {
+    background-color: #dcdcdc;
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ===== Card Utama ===== */
+.absensi-card {
+    background-color: #ffffff;
+    width: 900px;
+    padding: 40px 50px;
+    border: 8px solid #cfcfcf;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* ===== Judul ===== */
+.absensi-card h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* ===== Info Row ===== */
+.info-row {
+    display: flex;
+    margin-bottom: 18px;
+    font-size: 18px;
+}
+
+.info-row span:first-child {
+    width: 250px;
+}
+
+.info-row span:last-child {
+    font-weight: 500;
+}
+
+/* ===== Tombol Absensi ===== */
+.btn-absen {
+    position: absolute;
+    right: 50px;
+    bottom: 40px;
+    background-color: #4cd964;
+    color: #000;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.btn-absen:hover {
+    background-color: #3cc653;
+}
+
+/* ===== Modal Overlay ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* ===== Modal Box ===== */
+.modal-box {
+    background-color: #ffffff;
+    width: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* ===== Modal Header ===== */
+.modal-header {
+    background-color: #2f66b3;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.modal-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* ===== Modal Body ===== */
+.modal-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body label {
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.modal-body select {
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* ===== Tombol Submit ===== */
+.btn-submit {
+    background-color: #4cd964;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.btn-submit:hover {
+    background-color: #3cc653;
+}
+
+/* ===== Animasi ===== */
+@keyframes fadeIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
