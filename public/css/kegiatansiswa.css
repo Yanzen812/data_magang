@@ -85,6 +85,23 @@ h3 {
     border-radius: 3px;
 }
 
+/* ================= BUTTON LIHAT (DITAMBAHKAN) ================= */
+
+.btn-view {
+    background: #1e5db8;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-view:hover {
+    background: #174a93;
+}
+
 /* ================= TABLE ================= */
 
 .table-wrapper {

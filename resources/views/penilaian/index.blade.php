@@ -36,11 +36,17 @@
                 <tbody>
                     <tr>
                         <td><input type="checkbox"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td style="text-align: center;"><button class="btn-green">Nilai</button></td>
+                        <td>1</td>
+                        <td>Nama Siswa</td>
+                        <td>SMK / Kampus</td>
+                        <td>Nama Guru</td>
+                        <td style="text-align: center;">
+                            <button class="btn-green"
+                                data-bs-toggle="modal"
+                                data-bs-target="#nilaiModal">
+                                Nilai
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -48,7 +54,7 @@
     </div>
 </div>
 
-<!-- Modal Tambah Data -->
+<!-- ================= MODAL TAMBAH ================= -->
 <div class="modal fade" id="tambahModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -57,30 +63,30 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="formTambahPenilaian">
+                <form>
                     <div class="mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="nama" placeholder="Masukkan nama">
+                        <label class="form-label">Nama</label>
+                        <input type="text" class="form-control" placeholder="Masukkan nama">
                     </div>
                     <div class="mb-3">
-                        <label for="sekolah" class="form-label">Sekolah/Kampus</label>
-                        <input type="text" class="form-control" id="sekolah" placeholder="Masukkan sekolah atau kampus">
+                        <label class="form-label">Sekolah/Kampus</label>
+                        <input type="text" class="form-control" placeholder="Masukkan sekolah atau kampus">
                     </div>
                     <div class="mb-3">
-                        <label for="guru" class="form-label">Guru Pembimbing</label>
-                        <input type="text" class="form-control" id="guru" placeholder="Masukkan nama guru pembimbing">
+                        <label class="form-label">Guru Pembimbing</label>
+                        <input type="text" class="form-control" placeholder="Masukkan nama guru pembimbing">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary">Simpan</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-primary">Simpan</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Edit Data -->
+<!-- ================= MODAL EDIT ================= -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -89,27 +95,93 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="formEditPenilaian">
+                <form>
                     <div class="mb-3">
-                        <label for="editNama" class="form-label">Nama</label>
-                        <input type="text" class="form-control" id="editNama" placeholder="Masukkan nama">
+                        <label class="form-label">Nama</label>
+                        <input type="text" class="form-control" placeholder="Masukkan nama">
                     </div>
                     <div class="mb-3">
-                        <label for="editSekolah" class="form-label">Sekolah/Kampus</label>
-                        <input type="text" class="form-control" id="editSekolah" placeholder="Masukkan sekolah atau kampus">
+                        <label class="form-label">Sekolah/Kampus</label>
+                        <input type="text" class="form-control" placeholder="Masukkan sekolah atau kampus">
                     </div>
                     <div class="mb-3">
-                        <label for="editGuru" class="form-label">Guru Pembimbing</label>
-                        <input type="text" class="form-control" id="editGuru" placeholder="Masukkan nama guru pembimbing">
+                        <label class="form-label">Guru Pembimbing</label>
+                        <input type="text" class="form-control" placeholder="Masukkan nama guru pembimbing">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary">Update</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- ================= MODAL NILAI ================= -->
+<div class="modal fade" id="nilaiModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Form Penilaian Siswa Magang</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+
+                    <div class="mb-3">
+                        <label class="form-label">Disiplin</label>
+                        <input type="number" class="form-control nilai-input" id="disiplin" min="0" max="100" placeholder="0 - 100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kerjasama</label>
+                        <input type="number" class="form-control nilai-input" id="kerjasama" min="0" max="100" placeholder="0 - 100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tanggung Jawab</label>
+                        <input type="number" class="form-control nilai-input" id="tanggungjawab" min="0" max="100" placeholder="0 - 100">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nilai Akhir</label>
+                        <input type="number" class="form-control" id="nilaiakhir" readonly>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-primary">Simpan Nilai</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= SCRIPT AUTO HITUNG ================= -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const inputs = document.querySelectorAll('.nilai-input');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', hitungNilaiAkhir);
+        });
+
+        function hitungNilaiAkhir() {
+            let disiplin = parseFloat(document.getElementById('disiplin').value) || 0;
+            let kerjasama = parseFloat(document.getElementById('kerjasama').value) || 0;
+            let tanggungjawab = parseFloat(document.getElementById('tanggungjawab').value) || 0;
+
+            let rataRata = (disiplin + kerjasama + tanggungjawab) / 3;
+
+            document.getElementById('nilaiakhir').value = rataRata.toFixed(2);
+        }
+
+    });
+</script>
 
 @endsection

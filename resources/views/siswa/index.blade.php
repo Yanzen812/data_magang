@@ -1,4 +1,4 @@
-@extends('layouts.siswa')
+@extends('layouts.admin')
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/data_siswa.css') }}">

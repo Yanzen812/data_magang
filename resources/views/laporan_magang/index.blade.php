@@ -43,10 +43,16 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>01 Januari 2026</td>
-                        <td>membuat crud dasar</td>
+                        <td></td>
+                        <td>Membuat CRUD Dasar</td>
                         <td>
-                            <a href="#" class="btn-view">Lihat</a>
+                            <button onclick="openModal(
+                                '01 Januari 2026',
+                                'Membuat CRUD Dasar',
+                                'Membuat fitur tambah, edit, dan hapus data siswa menggunakan Laravel.'
+                            )">
+                                Lihat
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -56,4 +62,46 @@
     </div>
 
 </div>
+
+<!-- MODAL DETAIL -->
+<div id="modalDetail" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+
+    <div style="background:white; width:400px; margin:10% auto; padding:20px; position:relative; border-radius:8px;">
+        
+        <span onclick="closeModal()" 
+              style="position:absolute; right:10px; top:5px; cursor:pointer; font-size:20px;">
+              &times;
+        </span>
+
+        <h3>Detail Kegiatan</h3>
+
+        <p><strong>Tanggal:</strong> <span id="modalTanggal"></span></p>
+        <p><strong>Kegiatan:</strong> <span id="modalJudul"></span></p>
+        <p><strong>Deskripsi:</strong></p>
+        <p id="modalDeskripsi"></p>
+
+    </div>
+
+</div>
+
+<script>
+function openModal(tanggal, judul, deskripsi) {
+    document.getElementById("modalTanggal").innerText = tanggal;
+    document.getElementById("modalJudul").innerText = judul;
+    document.getElementById("modalDeskripsi").innerText = deskripsi;
+    document.getElementById("modalDetail").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("modalDetail").style.display = "none";
+}
+
+window.onclick = function(event) {
+    let modal = document.getElementById("modalDetail");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
 @endsection

@@ -35,20 +35,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>1</td>
+                        <td>Budi Santoso</td>
+                        <td>SMK Negeri 1</td>
+                        <td>08123456789</td>
+                        <td>RPL</td>
+                        <td>Jan - Mar 2026</td>
+                        <td style="color: orange; font-weight:bold;">
+                            Menunggu Verifikasi
+                        </td>
+                        <td>
+                            <button class="btn-blue"
+                                onclick="openSuratModal(
+                                    'Budi Santoso',
+                                    'SMK Negeri 1',
+                                    'Jan - Mar 2026',
+                                    'Menunggu Verifikasi',
+                                    'surat_pengantar.pdf'
+                                )">
+                                Lihat Surat
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 
 <!-- ================= MODAL TAMBAH SISWA ================= -->
 
@@ -99,24 +113,77 @@
     </div>
 </div>
 
-<!-- ================= SCRIPT MODAL ================= -->
+
+<!-- ================= MODAL LIHAT SURAT ================= -->
+
+<div class="modal-overlay" id="modalSurat">
+    <div class="modal-box">
+        <span class="close-btn" id="closeSurat">&times;</span>
+        <h3>DETAIL SURAT PENGANTAR</h3>
+
+        <p><strong>Nama:</strong> <span id="suratNama"></span></p>
+        <p><strong>Sekolah/Kampus:</strong> <span id="suratSekolah"></span></p>
+        <p><strong>Periode Magang:</strong> <span id="suratPeriode"></span></p>
+
+        <p>
+            <strong>File Surat:</strong><br>
+            <a href="#" target="_blank" id="suratFile">Download Surat</a>
+        </p>
+
+        <p style="margin-top:15px;">
+            <strong>Status:</strong> 
+            <span id="suratStatus" style="color: orange; font-weight:bold;">
+                Menunggu Verifikasi
+            </span>
+        </p>
+    </div>
+</div>
+
+
+<!-- ================= SCRIPT ================= -->
 
 <script>
+    // Modal Tambah
     const btnTambah = document.getElementById('btnTambah');
-    const modal = document.getElementById('modalOverlay');
+    const modalTambah = document.getElementById('modalOverlay');
     const closeModal = document.getElementById('closeModal');
 
     btnTambah.addEventListener('click', function () {
-        modal.style.display = 'flex';
+        modalTambah.style.display = 'flex';
     });
 
     closeModal.addEventListener('click', function () {
-        modal.style.display = 'none';
+        modalTambah.style.display = 'none';
     });
 
     window.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.style.display = 'none';
+        if (e.target === modalTambah) {
+            modalTambah.style.display = 'none';
+        }
+    });
+
+
+    // Modal Lihat Surat
+    const modalSurat = document.getElementById('modalSurat');
+    const closeSurat = document.getElementById('closeSurat');
+
+    function openSuratModal(nama, sekolah, periode, status, file) {
+        document.getElementById('suratNama').innerText = nama;
+        document.getElementById('suratSekolah').innerText = sekolah;
+        document.getElementById('suratPeriode').innerText = periode;
+        document.getElementById('suratFile').href = '/storage/surat/' + file;
+        document.getElementById('suratStatus').innerText = status;
+
+        modalSurat.style.display = 'flex';
+    }
+
+    closeSurat.addEventListener('click', function () {
+        modalSurat.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target === modalSurat) {
+            modalSurat.style.display = 'none';
         }
     });
 </script>
