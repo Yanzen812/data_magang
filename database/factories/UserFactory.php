@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -23,22 +23,36 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        // 75% siswa role dengan siswa_id, 25% admin tanpa siswa_id
+        $role = fake()->randomElement(['siswa', 'siswa', 'siswa', 'admin']);
+        
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'username' => fake()->unique()->userName(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'role' => $role,
+            'siswa_id' => $role === 'siswa' ? Siswa::factory() : null,
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Create an admin user.
      */
-    public function unverified(): static
+    public function admin(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'role' => 'admin',
+            'siswa_id' => null,
+        ]);
+    }
+
+    /**
+     * Create a siswa user.
+     */
+    public function siswa(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'siswa',
+            'siswa_id' => Siswa::factory(),
         ]);
     }
 }

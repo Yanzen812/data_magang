@@ -1,5 +1,9 @@
 @extends('layouts.admin')
 
+@php
+    use Carbon\Carbon;
+@endphp
+
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
@@ -10,22 +14,22 @@
     <div class="card-grid">
         <div class="stat-card red">
             <p>Total Siswa Magang</p>
-            <h3>50</h3>
+            <h3>{{ $total_siswa }}</h3>
         </div>
 
         <div class="stat-card green">
             <p>Total Hadir</p>
-            <h3>45</h3>
+            <h3>{{ $total_hadir }}</h3>
         </div>
 
         <div class="stat-card yellow">
             <p>Total Guru Pembimbing</p>
-            <h3>25</h3>
+            <h3>{{ $total_pembimbing }}</h3>
         </div>
 
         <div class="stat-card pink">
             <p>Izin dan Sakit</p>
-            <h3>5</h3>
+            <h3>{{ $izin_sakit }}</h3>
         </div>
     </div>
 
@@ -42,12 +46,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Fafayruz</td>
-                        <td>SMA Petra</td>
-                        <td>09.15</td>
-                        <td>15 Menit</td>
-                    </tr>
+                    @forelse($terlambat as $row)
+                        <tr>
+                            <td>{{ $row->nama }}</td>
+                            <td>{{ $row->asal_sekolah }}</td>
+                            <td>{{ $row->waktu_datang }}</td>
+                            <td>{{ $row->waktu_datang }} Menit</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada siswa terlambat hari ini</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -64,12 +74,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Fafayruz</td>
-                        <td>05 Februari 2026</td>
-                        <td>14.00</td>
-                        <td>Mengirim desain</td>
-                    </tr>
+                    @forelse($aktivitas as $act)
+                        <tr>
+                            <td>{{ $act->nama }}</td>
+                            <td>{{ $act->tanggal ? \Carbon\Carbon::parse($act->tanggal)->format('d F Y') : '-' }}</td>
+                            <td>{{ $act->updated_at ?? '-' }}</td>
+                            <td>{{ $act->deskripsi_kegiatan }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak ada aktivitas hari ini</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

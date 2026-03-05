@@ -11,7 +11,7 @@
 
     <div class="login-container">
         <div class="top-border"></div>
-        
+
         <header>
             <h1>Nusa Indo</h1>
             <div class="divider">
@@ -19,36 +19,43 @@
             </div>
         </header>
 
-        <form>
+        <form action="{{ route('login_proses') }}" method="POST">
+            @csrf
+            @if ($errors->any())
+                    <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <span>{{ $error }}</li>
+                            @endforeach
+                    </div>
+                @endif
             <div class="input-group">
-                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Username" name="username" value="{{ old('username') }}" required>
                 <div class="icon-box">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-user"></i>
                 </div>
             </div>
-
-            <div class="input-group">
-                <input type="password" placeholder="Password" required>
+            <div class="input-group show-password">
+                <input type="password" placeholder="Password" name="password" required id="password">
                 <div class="icon-box">
-                    <i class="fas fa-lock"></i>
+                    <span class="fas fa-lock" id="password-lock"></span>
                 </div>
             </div>
 
             <div class="action-row">
-                <label class="checkbox-container">
-                    <input type="checkbox">
-                    <span class="checkmark"></span>
-                    Ingatkan saya
-                </label>
                 <button type="submit" class="login-btn">Login</button>
             </div>
         </form>
-
-        <div class="footer-links">
-            <a href="#">Lupa kata sandi</a>
-            {{-- <a href="#">Belum punya akun?Registrasi</a> --}}
-        </div>
     </div>
-
+{{-- <script>
+    $('.show-password').on('click', function() {
+        if($('#password').attr('type') === 'password') {
+            $('#password').attr('type', 'text');
+            $('#password-lock').attr('class', 'fas fa-unlock');
+        } else {
+            $('#password').attr('type', 'password');
+            $('#password-lock').attr('class', 'fas fa-lock');
+        }
+    });
+</script> --}}
 </body>
 </html>
