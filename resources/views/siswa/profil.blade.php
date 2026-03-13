@@ -11,47 +11,47 @@
 
         <div class="row mb-2">
             <div class="col-md-3">Nama Siswa :</div>
-            <div class="col-md-9">Ahmad Naufal</div>
+            <div class="col-md-9">{{ $siswa->nama ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
             <div class="col-md-3">Nomer Induk Siswa :</div>
-            <div class="col-md-9">09038828626583</div>
+            <div class="col-md-9">{{ $siswa->id ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
             <div class="col-md-3">Sekolah/kampus :</div>
-            <div class="col-md-9">SMKN 10 SURABAYA</div>
+            <div class="col-md-9">{{ $siswa->asal_sekolah ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
             <div class="col-md-3">Jurusan :</div>
-            <div class="col-md-9">Rekayasa Perangkat Lunak</div>
+            <div class="col-md-9">{{ $siswa->jurusan ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
-            <div class="col-md-3">Tanggal masuk :</div>
-            <div class="col-md-9">01-01-2026</div>
+            <div class="col-md-3">Periode :</div>
+            <div class="col-md-9">{{ $siswa->periode ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
-            <div class="col-md-3">Tanggal Selesai :</div>
-            <div class="col-md-9">01-03-2026</div>
+            <div class="col-md-3">Kelompok :</div>
+            <div class="col-md-9">{{ $siswa->kelompok ?? '-' }}</div>
         </div>
 
         <div class="row mb-2">
             <div class="col-md-3">No Tlp :</div>
-            <div class="col-md-9">0877484637393</div>
+            <div class="col-md-9">{{ $siswa->kontak ?? '-' }}</div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-3">Alamat :</div>
-            <div class="col-md-9">Waru</div>
+            <div class="col-md-9">{{ $siswa->alamat ?? '-' }}</div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-3">Jenis Kelamin :</div>
-            <div class="col-md-9">Laki-Laki</div>
+            <div class="col-md-9">{{ $siswa->jenis_kelamin ?? '-' }}</div>
         </div>
 
         <!-- BUTTON BUKA POPUP -->

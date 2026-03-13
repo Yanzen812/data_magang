@@ -39,11 +39,14 @@ Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
 
 // Siswa routes (requires siswa role)
 // Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/absensi-siswa', function() { return view('siswa.absensi_siswa'); })->name('absensi_siswa');
-    Route::get('/kegiatansiswa', function() { return view('siswa.kegiatan_siswa'); })->name('kegiatansiswa');
-    // Route::get('/kegiatansiswa/create', function() { return view('siswa.kegiatansiswa.create'); })->name('kegiatansiswa.create');
-    Route::get('/laporan-magang', function() { return view('siswa.laporan_magang'); })->name('laporan_magang');
-    Route::get('/surat-pengantar', function() { return view('siswa.surat_pengantar'); })->name('surat_pengantar');
-    Route::get('/profile', function() { return view('siswa.profil'); })->name('profile');
+    Route::get('/absensi-siswa', [SiswaController::class, 'absensi_siswa'])->name('absensi_siswa');
+    Route::post('/absensi-siswa', [SiswaController::class, 'store_absensi_siswa'])->name('absensi_siswa.store');
+
+    Route::get('/kegiatansiswa', [SiswaController::class, 'kegiatan_siswa'])->name('kegiatansiswa');
+    Route::post('/kegiatansiswa', [SiswaController::class, 'store_kegiatan_siswa'])->name('kegiatansiswa.store');
+
+    Route::get('/laporan-magang', [SiswaController::class, 'laporan_magang'])->name('laporan_magang');
+    Route::get('/surat-pengantar', [SiswaController::class, 'surat_pengantar'])->name('surat_pengantar');
+    Route::get('/profile', [SiswaController::class, 'profile'])->name('profile');
 // });
 

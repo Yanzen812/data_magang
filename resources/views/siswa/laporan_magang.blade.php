@@ -12,17 +12,17 @@
 
         <div class="summary-card">
             <div class="summary-title">Nilai Rata-Rata</div>
-            <div class="summary-value value-green">95.5</div>
+            <div class="summary-value value-green">{{ number_format($rataRataNilai ?? 0, 2) }}</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">Total Kehadiran</div>
-            <div class="summary-value value-yellow">65 Hari</div>
+            <div class="summary-value value-yellow">{{ $totalKehadiran ?? 0 }} Hari</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">Total Kegiatan</div>
-            <div class="summary-value value-blue">20</div>
+            <div class="summary-value value-blue">{{ $totalKegiatan ?? 0 }}</div>
         </div>
 
     </div>
@@ -42,13 +42,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01 Januari 2026</td>
-                        <td>membuat crud dasar</td>
-                        <td>
-                            <a href="#" class="btn-view" onclick="openDetailModal(event, '01 Januari 2026', 'membuat crud dasar')">Lihat</a>
-                        </td>
-                    </tr>
+                    @forelse($riwayatKegiatan as $item)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
+                            <td>{{ $item->deskripsi_kegiatan }}</td>
+                            <td>
+                                <a href="#" class="btn-view" onclick="openDetailModal(event, '{{ \Carbon\Carbon::parse($item->tanggal)->format('d F Y') }}', '{{ addslashes($item->deskripsi_kegiatan) }}')">Lihat</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center">Belum ada riwayat kegiatan.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

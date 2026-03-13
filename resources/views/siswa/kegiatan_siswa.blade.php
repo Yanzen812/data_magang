@@ -18,29 +18,36 @@
             <table>
                 <thead>
                     <tr>
-                        <th></th>
                         <th>No</th>
-                        <th>Nama</th>
-                        <th>Sekolah/Kampus</th>
                         <th>Tanggal</th>
                         <th>Kegiatan</th>
                         <th>Bukti</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="checkbox"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <a href="#" class="btn-view">Lihat</a>
-                        </td>
-                    </tr>
+                    @forelse($kegiatan as $index => $item)
+                        <tr>
+                            <td>{{ $kegiatan->firstItem() + $index }}</td>
+                            <td>{{ \\Carbon\\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
+                            <td>{{ $item->deskripsi_kegiatan }}</td>
+                            <td>
+                                @if($item->file)
+                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view">Lihat</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">Belum ada kegiatan.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
+        </div>
+        <div style="margin-top: 20px;">
+            {{ $kegiatan->links() }}
         </div>
 
 <div class="modal-overlay" id="modalOverlay">

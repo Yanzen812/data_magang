@@ -34,19 +34,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                    @forelse($suratPengantar as $index => $item)
+                        <tr>
+                            <td>{{ $suratPengantar->firstItem() + $index }}</td>
+                            <td>{{ $item->siswa->nama ?? ($siswa->nama ?? '-') }}</td>
+                            <td>{{ $item->siswa->asal_sekolah ?? '-' }}</td>
+                            <td>{{ $item->siswa->kontak ?? '-' }}</td>
+                            <td>{{ $item->siswa->jurusan ?? '-' }}</td>
+                            <td>{{ $item->siswa->periode ?? '-' }}</td>
+                            <td>{{ $item->status ?? '-' }}</td>
+                            <td>
+                                @if($item->file)
+                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view">Lihat</a>
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center">Belum ada Surat Pengantar.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
+
+        <div style="margin-top: 20px;">{{ $suratPengantar->links() }}</div>
     </div>
 </div>
 
