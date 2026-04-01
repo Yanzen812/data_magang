@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
             $table->date('tanggal');
             $table->time('waktu_datang')->nullable();
             $table->enum('status', ['h', 'i', 's', 't']);
@@ -20,7 +20,7 @@ return new class extends Migration
         });
         Schema::create('kegiatan_harian', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade');
             $table->date('tanggal');
             $table->text('deskripsi_kegiatan');
             $table->string('file')->nullable();
@@ -32,7 +32,9 @@ return new class extends Migration
 
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('absensi');
         Schema::dropIfExists('kegiatan_harian');
+        Schema::enableForeignKeyConstraints();
     }
 };

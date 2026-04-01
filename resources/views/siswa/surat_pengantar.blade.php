@@ -31,6 +31,7 @@
                         <th>Periode Magang</th>
                         <th>Status</th>
                         <th>Surat Pengantar</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,7 +43,14 @@
                             <td>{{ $item->siswa->kontak ?? '-' }}</td>
                             <td>{{ $item->siswa->jurusan ?? '-' }}</td>
                             <td>{{ $item->siswa->periode ?? '-' }}</td>
-                            <td>{{ $item->status ?? '-' }}</td>
+                            <td>
+                                <span style="padding: 5px 10px; border-radius: 4px;
+                                    @if($item->status == 'approved') background-color: #28a745; color: white;
+                                    @elseif($item->status == 'rejected') background-color: #dc3545; color: white;
+                                    @else background-color: #ffc107; color: black; @endif">
+                                    {{ ucfirst($item->status ?? 'pending') }}
+                                </span>
+                            </td>
                             <td>
                                 @if($item->file)
                                     <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view">Lihat</a>
@@ -50,10 +58,17 @@
                                     -
                                 @endif
                             </td>
+                            <td>
+                                <form action="{{ route('surat_pengantar.delete', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center">Belum ada Surat Pengantar.</td>
+                            <td colspan="9" class="text-center">Belum ada Surat Pengantar.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -69,42 +84,16 @@
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
         <span class="close-btn" id="closeModal">&times;</span>
-        <h3>TAMBAH SISWA</h3>
+        <h3>TAMBAH SURAT PENGANTAR</h3>
 
-        <form>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Nama :</label>
-                    <input type="text" placeholder="Masukkan Nama Siswa">
-                </div>
-
-                <div class="form-group">
-                    <label>Periode Magang :</label>
-                    <input type="text" placeholder="Masukkan Periode Magang">
-                </div>
-            </div>
+        <form action="{{ route('surat_pengantar.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
             <div class="form-row">
-                <div class="form-group">
-                    <label>Sekolah/Kampus :</label>
-                    <input type="text" placeholder="Masukkan Nama Sekolah/Kampus">
-                </div>
-
                 <div class="form-group">
                     <label>Surat Pengantar :</label>
-                    <input type="file">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Kontak :</label>
-                    <input type="text" placeholder="Masukkan Kontak">
-                </div>
-
-                <div class="form-group">
-                    <label>Jurusan :</label>
-                    <input type="text" placeholder="Masukkan Jurusan">
+                    <input type="file" name="file" accept=".pdf,.doc,.docx" required>
+                    <small>Maksimal 5 MB (format: PDF, DOC, DOCX)</small>
                 </div>
             </div>
 

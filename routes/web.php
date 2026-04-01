@@ -44,9 +44,14 @@ Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
 
     Route::get('/kegiatansiswa', [SiswaController::class, 'kegiatan_siswa'])->name('kegiatansiswa');
     Route::post('/kegiatansiswa', [SiswaController::class, 'store_kegiatan_siswa'])->name('kegiatansiswa.store');
+    Route::delete('/kegiatan-siswa/{id}', [SiswaController::class, 'delete_kegiatan_siswa'])->name('kegiatan_siswa.delete');
 
     Route::get('/laporan-magang', [SiswaController::class, 'laporan_magang'])->name('laporan_magang');
     Route::get('/surat-pengantar', [SiswaController::class, 'surat_pengantar'])->name('surat_pengantar');
+    Route::post('/surat-pengantar', [SiswaController::class, 'store_surat_pengantar'])->name('surat_pengantar.store');
+    Route::delete('/surat-pengantar/{id}', [SiswaController::class, 'delete_surat_pengantar'])->name('surat_pengantar.delete');
     Route::get('/profile', [SiswaController::class, 'profile'])->name('profile');
+    Route::post('/profile/update-profil', [SiswaController::class, 'update_profil'])->name('profile.update_profil');
+    Route::post('/profile/update-password', [SiswaController::class, 'update_password'])->name('profile.update_password');
 // });
 

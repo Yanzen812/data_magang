@@ -209,6 +209,52 @@ class SiswaController extends Controller
         ]);
     }
 
+    public function update_password(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role !== 'siswa') {
+            return Redirect::route('login')->with('error', 'Akses ditolak. Silakan login sebagai siswa.');
+        }
+
+        $data = $request->validate([
+            'password_baru' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user->password = Hash::make($data['password_baru']);
+        // $user->save();
+
+        return Redirect::route('profile')->with('success', 'Password berhasil diubah.');
+    }
+    public function update_profil(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role !== 'siswa') {
+            return Redirect::route('login')->with('error', 'Akses ditolak. Silakan login sebagai siswa.');
+        }
+
+        $siswa = Siswa::find($user->siswa_id);
+
+        if (!$siswa) {
+            return Redirect::route('login')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'asal_sekolah' => 'nullable|string|max:255',
+            'jurusan' => 'nullable|string|max:255',
+            'periode' => 'nullable|string|max:100',
+            'kelompok' => 'nullable|string|max:100',
+            'kontak' => 'nullable|string|max:100',
+            'alamat' => 'nullable|string|max:255',
+            'jenis_kelamin' => 'nullable|in:L,P',
+        ]);
+
+        $siswa->update($data);
+
+        return Redirect::route('profile')->with('success', 'Profil berhasil diperbarui.');
+    }
     public function store_absensi_siswa(Request $request)
     {
         $user = Auth::user();
@@ -308,5 +354,88 @@ class SiswaController extends Controller
     {
         DB::table('siswa')->where('id', $id)->delete();
         return redirect()->route('siswa')->with('success', 'Data siswa berhasil dihapus');
+    }
+
+    public function store_surat_pengantar(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role !== 'siswa') {
+            return Redirect::route('login')->with('error', 'Akses ditolak. Silakan login sebagai siswa.');
+        }
+
+        $siswa = Siswa::find($user->siswa_id);
+
+        if (!$siswa) {
+            return Redirect::route('login')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $data = $request->validate([
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:5120',
+        ]);
+
+        $suratData = [
+            'id_siswa' => $siswa->id,
+            'status' => 'pending',
+        ];
+
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('surat_pengantar', 'public');
+            $suratData['file'] = $path;
+        }
+
+        Surat_pengantar::create($suratData);
+
+        return Redirect::route('surat_pengantar')->with('success', 'Surat pengantar berhasil ditambahkan.');
+    }
+
+    public function delete_kegiatan_siswa($id)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role !== 'siswa') {
+            return Redirect::route('login')->with('error', 'Akses ditolak. Silakan login sebagai siswa.');
+        }
+
+        $siswa = Siswa::find($user->siswa_id);
+
+        if (!$siswa) {
+            return Redirect::route('login')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $kegiatan = KegiatanHarian::find($id);
+
+        if (!$kegiatan || $kegiatan->siswa_id !== $siswa->id) {
+            return Redirect::route('kegiatansiswa')->with('error', 'Kegiatan tidak ditemukan atau tidak memiliki akses.');
+        }
+
+        $kegiatan->delete();
+
+        return Redirect::route('kegiatansiswa')->with('success', 'Kegiatan berhasil dihapus.');
+    }
+
+    public function delete_surat_pengantar($id)
+    {
+        $user = Auth::user();
+
+        if (!$user || $user->role !== 'siswa') {
+            return Redirect::route('login')->with('error', 'Akses ditolak. Silakan login sebagai siswa.');
+        }
+
+        $siswa = Siswa::find($user->siswa_id);
+
+        if (!$siswa) {
+            return Redirect::route('login')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $surat = Surat_pengantar::find($id);
+
+        if (!$surat || $surat->id_siswa !== $siswa->id) {
+            return Redirect::route('surat_pengantar')->with('error', 'Surat pengantar tidak ditemukan atau tidak memiliki akses.');
+        }
+
+        $surat->delete();
+
+        return Redirect::route('surat_pengantar')->with('success', 'Surat pengantar berhasil dihapus.');
     }
 }

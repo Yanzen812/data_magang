@@ -45,11 +45,6 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-md-3">Alamat :</div>
-            <div class="col-md-9">{{ $siswa->alamat ?? '-' }}</div>
-        </div>
-
-        <div class="row mb-3">
             <div class="col-md-3">Jenis Kelamin :</div>
             <div class="col-md-9">{{ $siswa->jenis_kelamin ?? '-' }}</div>
         </div>
@@ -58,9 +53,71 @@
         <button class="btn btn-success" onclick="openModal()">
             Password
         </button>
+        <button class="btn btn-primary" onclick="openEditModal()">
+            Edit Profil
+        </button>
 
     </div>
 
+</div>
+
+<!-- MODAL EDIT PROFIL -->
+<div class="modal-overlay" id="modalEditProfil">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span>EDIT PROFIL</span>
+            <button onclick="closeEditModal()">×</button>
+        </div>
+
+        <div class="modal-body">
+            <form method="POST" action="{{ route('profile.update_profil') }}">
+                @csrf
+
+                <div class="form-group">
+                    <label>Nama Siswa</label>
+                    <input type="text" name="nama" value="{{ $siswa->nama ?? '' }}" placeholder="Masukkan Nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Sekolah/Kampus</label>
+                    <input type="text" name="asal_sekolah" value="{{ $siswa->asal_sekolah ?? '' }}" placeholder="Masukkan Sekolah/Kampus">
+                </div>
+
+                <div class="form-group">
+                    <label>Jurusan</label>
+                    <input type="text" name="jurusan" value="{{ $siswa->jurusan ?? '' }}" placeholder="Masukkan Jurusan">
+                </div>
+
+                <div class="form-group">
+                    <label>Periode</label>
+                    <input type="text" name="periode" value="{{ $siswa->periode ?? '' }}" placeholder="Masukkan Periode">
+                </div>
+
+                <div class="form-group">
+                    <label>Kelompok</label>
+                    <input type="text" name="kelompok" value="{{ $siswa->kelompok ?? '' }}" placeholder="Masukkan Kelompok">
+                </div>
+
+                <div class="form-group">
+                    <label>No Telp</label>
+                    <input type="text" name="kontak" value="{{ $siswa->kontak ?? '' }}" placeholder="Masukkan No Telp">
+                </div>
+
+                <div class="form-group">
+                    <label>Jenis Kelamin</label>
+                    <select name="jenis_kelamin">
+                        <option value="">-- Pilih Jenis Kelamin --</option>
+                        <option value="L" {{ $siswa->jenis_kelamin == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="P" {{ $siswa->jenis_kelamin == 'P' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Simpan
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -73,11 +130,14 @@
         </div>
 
         <div class="modal-body">
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('profile.update_password') }}">
                 @csrf
 
                 <label>Password Baru</label>
-                <input type="password" placeholder="Masukkan Password Baru">
+                <input type="password" name="password_baru" placeholder="Masukkan Password Baru" required>
+
+                <label>Konfirmasi Password</label>
+                <input type="password" name="password_baru_confirmation" placeholder="Konfirmasi Password Baru" required>
 
                 <button type="submit" class="btn-submit">
                     Simpan
@@ -89,6 +149,14 @@
 
 
 <script>
+function openEditModal() {
+    document.getElementById('modalEditProfil').style.display = 'flex';
+}
+
+function closeEditModal() {
+    document.getElementById('modalEditProfil').style.display = 'none';
+}
+
 function openModal() {
     document.getElementById('modalPassword').style.display = 'flex';
 }
@@ -96,6 +164,18 @@ function openModal() {
 function closeModal() {
     document.getElementById('modalPassword').style.display = 'none';
 }
+
+// Tutup modal ketika click di luar
+window.addEventListener('click', function(e) {
+    const editModal = document.getElementById('modalEditProfil');
+    const passModal = document.getElementById('modalPassword');
+    if (e.target === editModal) {
+        editModal.style.display = 'none';
+    }
+    if (e.target === passModal) {
+        passModal.style.display = 'none';
+    }
+});
 </script>
 
 @endsection

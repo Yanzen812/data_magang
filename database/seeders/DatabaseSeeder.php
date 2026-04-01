@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $siswa = Siswa::factory()->count(15)->create();
-        
+
         $siswa->each(function ($s) {
             User::factory()->siswa()->create([
                 'siswa_id' => $s->id,
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         });
 
         $siswa->each(function ($s) {
-            KegiatanHarian::factory()->count(rand(5, 12))->create([
+            KegiatanHarian::factory()->count(rand(5, 10))->create([
                 'siswa_id' => $s->id,
             ]);
         });

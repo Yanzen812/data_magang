@@ -56,9 +56,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswa');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('users');
         Schema::dropIfExists('sessions');
         Schema::dropIfExists('pembimbing');
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('siswa');
+        Schema::enableForeignKeyConstraints();
     }
 };
