@@ -29,7 +29,6 @@
                         <th>Sekolah/Kampus</th>
                         <th>Status</th>
                         <th>File</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,11 +43,8 @@
                                 @if($row->file)
                                     <a href="{{ asset('storage/' . $row->file) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                 @else
-                                    -
+                                    <span style="margin-right:8px;">-</span>
                                 @endif
-                            </td>
-                            <td>
-                                <!-- action buttons if needed -->
                             </td>
                         </tr>
                     @empty

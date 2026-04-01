@@ -75,10 +75,48 @@ class AdminController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        // also load all siswa for grouping UI
+        $siswa = DB::table('siswa')
+            ->select('id', 'nama', 'asal_sekolah', 'kelompok')
+            ->orderBy('nama')
+            ->get();
+
+        // load full pembimbing list for selection
+        $pembimbing = DB::table('pembimbing')
+            ->select('id', 'nama_pembimbing')
+            ->orderBy('nama_pembimbing')
+            ->get();
+
         return view('admin.guru', [
             'guru' => $guru,
             'request' => $request,
+            'siswa' => $siswa,
+            'pembimbing' => $pembimbing,
         ]);
+    }
+
+    /**
+     * Assign a kelompok to selected siswa.
+     */
+    public function assign_group(Request $request)
+    {
+        $data = $request->validate([
+            'kelompok' => 'required|string|max:100',
+            'siswa_ids' => 'required|array|min:1',
+            'siswa_ids.*' => 'integer|exists:siswa,id',
+            'id_pembimbing' => 'nullable|integer|exists:pembimbing,id',
+        ]);
+
+        $update = ['kelompok' => $data['kelompok']];
+        if (!empty($data['id_pembimbing'])) {
+            $update['id_pembimbing'] = $data['id_pembimbing'];
+        }
+
+        DB::table('siswa')
+            ->whereIn('id', $data['siswa_ids'])
+            ->update($update);
+
+        return redirect()->route('guru')->with('success', 'Kelompok dan pembimbing berhasil disimpan untuk siswa terpilih.');
     }
 
     public function store_guru(Request $request)
@@ -110,8 +148,21 @@ class AdminController extends Controller
     public function surat(Request $request)
     {
         $query = DB::table('surat_pengantar as sp')
-            ->join('pembimbing as pb', 'pb.id', '=', 'sp.id_pembimbing')
-            ->select('sp.id', 'sp.file', 'sp.kelompok', 'pb.nama_pembimbing', 'pb.asal_sekolah', 'sp.status');
+            ->leftJoin('pembimbing as pb', 'pb.id', '=', 'sp.id_pembimbing')
+            // join siswa and the pembimbing referenced on siswa as fallback
+            ->leftJoin('siswa as s', 's.id', '=', 'sp.id_siswa')
+            ->leftJoin('pembimbing as pb2', 'pb2.id', '=', 's.id_pembimbing')
+            ->select(
+                'sp.id',
+                'sp.file',
+                // prefer kelompok from surat_pengantar, fallback to siswa.kelompok
+                DB::raw('COALESCE(sp.kelompok, s.kelompok) as kelompok'),
+                // prefer pembimbing on surat, fallback to pembimbing assigned to siswa
+                DB::raw('COALESCE(pb.nama_pembimbing, pb2.nama_pembimbing) as nama_pembimbing'),
+                // prefer pembimbing asal_sekolah from surat pembimbing, then siswa pembimbing, then siswa.asal_sekolah
+                DB::raw('COALESCE(pb.asal_sekolah, pb2.asal_sekolah, s.asal_sekolah) as asal_sekolah'),
+                'sp.status'
+            );
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -207,7 +258,6 @@ class AdminController extends Controller
         DB::table('penilaian')->where('id', $id)->delete();
         return redirect()->route('penilaian')->with('success', 'Data penilaian berhasil dihapus');
     }
-
 
     public function destroy_absensi($id)
     {

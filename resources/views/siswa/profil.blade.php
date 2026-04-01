@@ -7,6 +7,29 @@
 
     <div class="card p-4 shadow-sm">
 
+            {{-- Flash messages --}}
+            @if(session('success'))
+                <div class="alert alert-success" style="margin-bottom:12px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger" style="margin-bottom:12px;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger" style="margin-bottom:12px;">
+                    <ul style="margin:0; padding-left:18px;">
+                        @foreach($errors->all() as $err)
+                            <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
         <h4 class="fw-bold mb-4">Profil</h4>
 
         <div class="row mb-2">
@@ -130,14 +153,16 @@
         </div>
 
         <div class="modal-body">
-            <form method="POST" action="{{ route('profile.update_password') }}">
+            <form id="formPassword" method="POST" action="{{ route('profile.update_password') }}">
                 @csrf
 
                 <label>Password Baru</label>
-                <input type="password" name="password_baru" placeholder="Masukkan Password Baru" required>
+                <input id="password_baru" type="password" name="password_baru" placeholder="Masukkan Password Baru" required>
 
                 <label>Konfirmasi Password</label>
-                <input type="password" name="password_baru_confirmation" placeholder="Konfirmasi Password Baru" required>
+                <input id="password_confirm" type="password" name="password_baru_confirmation" placeholder="Konfirmasi Password Baru" required>
+
+                <div id="passwordError" style="color:#a94442; margin-top:8px; display:none;"></div>
 
                 <button type="submit" class="btn-submit">
                     Simpan
@@ -175,6 +200,34 @@ window.addEventListener('click', function(e) {
     if (e.target === passModal) {
         passModal.style.display = 'none';
     }
+});
+
+// Client-side password confirmation check
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('formPassword');
+    if (!form) return;
+
+    const pwd = document.getElementById('password_baru');
+    const confirm = document.getElementById('password_confirm');
+    const errDiv = document.getElementById('passwordError');
+
+    function clearError() {
+        errDiv.style.display = 'none';
+        errDiv.textContent = '';
+    }
+
+    pwd.addEventListener('input', clearError);
+    confirm.addEventListener('input', clearError);
+
+    form.addEventListener('submit', function(e) {
+        if (pwd.value !== confirm.value) {
+            e.preventDefault();
+            errDiv.textContent = 'Konfirmasi password tidak cocok.';
+            errDiv.style.display = 'block';
+            return false;
+        }
+        return true;
+    });
 });
 </script>
 

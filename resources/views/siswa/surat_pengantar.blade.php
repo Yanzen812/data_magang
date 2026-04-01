@@ -53,12 +53,14 @@
                             </td>
                             <td>
                                 @if($item->file)
-                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view">Lihat</a>
+                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view" style="margin-right:8px; background-color: #007bff; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Lihat</a>
                                 @else
-                                    -
+                                    <span style="margin-right:8px;">-</span>
                                 @endif
+                                
                             </td>
                             <td>
+
                                 <form action="{{ route('surat_pengantar.delete', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus?');">
                                     @csrf
                                     @method('DELETE')
@@ -88,11 +90,10 @@
 
         <form action="{{ route('surat_pengantar.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-
             <div class="form-row">
                 <div class="form-group">
                     <label>Surat Pengantar :</label>
-                    <input type="file" name="file" accept=".pdf,.doc,.docx" required>
+                    <input type="file" name="file" accept=".pdf,.doc,.docx">
                     <small>Maksimal 5 MB (format: PDF, DOC, DOCX)</small>
                 </div>
             </div>

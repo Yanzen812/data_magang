@@ -33,7 +33,7 @@ class SessionController extends Controller
 
         $infologin = [
             'username' => $request->username,
-            'password' => $request->password
+            'password' => $request->password,
         ];
 
         if (Auth::attempt($infologin)) {

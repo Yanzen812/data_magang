@@ -46,7 +46,6 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" onclick="loadEditKegiatan({{ $row->id }})">Edit</button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteKegiatan({{ $row->id }})">Hapus</button>
                             </td>
                         </tr>

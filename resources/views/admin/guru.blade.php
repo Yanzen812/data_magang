@@ -18,6 +18,7 @@
     <div class="data-panel">
         <div class="action-bar">
             <button class="btn-green" data-bs-toggle="modal" data-bs-target="#tambahModal">Tambah Data</button>
+            <button class="btn-blue" data-bs-toggle="modal" data-bs-target="#kelompokModal" style="margin-left:8px;">Kelompokkan Siswa</button>
         </div>
 
         <div class="table-wrapper">
@@ -53,6 +54,53 @@
         </div>
         <div style="margin-top: 20px;">
             {{ $guru->links() }}
+        </div>
+    </div>
+</div>
+
+<!-- Modal Kelompokkan Siswa -->
+<div class="modal fade" id="kelompokModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kelompokkan Siswa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formKelompok" method="POST" action="{{ route('guru.assign_group') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="kelompokName" class="form-label">Nama Kelompok</label>
+                        <input type="text" class="form-control" id="kelompokName" name="kelompok" placeholder="Masukkan nama kelompok (mis. Kelompok A)" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pembimbingSelect" class="form-label">Pilih Guru Pembimbing (opsional)</label>
+                        <select id="pembimbingSelect" name="id_pembimbing" class="form-select">
+                            <option value="">-- Tidak memilih pembimbing --</option>
+                            @foreach($pembimbing as $pb)
+                                <option value="{{ $pb->id }}">{{ $pb->nama_pembimbing }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Siswa</label>
+                        <div style="max-height: 300px; overflow:auto; border:1px solid #ddd; padding:8px;">
+                            <div style="margin-bottom:8px;"><input type="checkbox" id="selectAllSiswa"> <label for="selectAllSiswa">Pilih Semua</label></div>
+                            @foreach($siswa as $s)
+                                <div class="form-check">
+                                    <input class="form-check-input siswa-checkbox" type="checkbox" name="siswa_ids[]" value="{{ $s->id }}" id="siswa_{{ $s->id }}">
+                                    <label class="form-check-label" for="siswa_{{ $s->id }}">{{ $s->nama }} (@if($s->asal_sekolah) {{ $s->asal_sekolah }} @else - @endif) @if($s->kelompok) - <strong>{{ $s->kelompok }}</strong> @endif</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary" onclick="document.getElementById('formKelompok').submit()">Simpan Kelompok</button>
+            </div>
         </div>
     </div>
 </div>
@@ -148,6 +196,17 @@
             form.submit();
         }
     }
+
+    // Select all siswa checkbox handling
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAll = document.getElementById('selectAllSiswa');
+        if (selectAll) {
+            selectAll.addEventListener('change', function() {
+                const checked = this.checked;
+                document.querySelectorAll('.siswa-checkbox').forEach(cb => cb.checked = checked);
+            });
+        }
+    });
 </script>
 
 @endsection

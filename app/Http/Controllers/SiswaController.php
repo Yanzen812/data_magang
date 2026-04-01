@@ -221,8 +221,9 @@ class SiswaController extends Controller
             'password_baru' => 'required|string|min:6|confirmed',
         ]);
 
-        $user->password = Hash::make($data['password_baru']);
-        // $user->save();
+        // Assign plain password and let the model cast/hash it, then save
+        $user->password = $data['password_baru'];
+        $user->save();
 
         return Redirect::route('profile')->with('success', 'Password berhasil diubah.');
     }

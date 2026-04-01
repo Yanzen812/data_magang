@@ -25,12 +25,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $siswa = Siswa::factory()->count(15)->create();
-
-        $siswa->each(function ($s) {
-            User::factory()->siswa()->create([
+        // create a User account for each generated Siswa (role = siswa)
+        foreach ($siswa as $s) {
+            User::create([
+                'username' => 'siswa' . $s->id,
+                'password' => Hash::make('password'),
+                'role' => 'siswa',
                 'siswa_id' => $s->id,
             ]);
-        });
+        }
+
+        
 
         $pembimbing = Pembimbing::factory()->count(5)->create();
 

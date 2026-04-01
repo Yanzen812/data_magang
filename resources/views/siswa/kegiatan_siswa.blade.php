@@ -18,7 +18,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="selectAll"></th>
                         <th>No</th>
                         <th>Tanggal</th>
                         <th>Kegiatan</th>
@@ -29,15 +28,14 @@
                 <tbody>
                     @forelse($kegiatan as $index => $item)
                         <tr>
-                            <td><input type="checkbox" class="kegiatanCheckbox" value="{{ $item->id }}"></td>
                             <td>{{ $kegiatan->firstItem() + $index }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}</td>
                             <td>{{ $item->deskripsi_kegiatan }}</td>
                             <td>
-                                @if($item->file)
-                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view">Lihat</a>
+                                 @if($item->file)
+                                    <a href="{{ Storage::url($item->file) }}" target="_blank" class="btn-view" style="margin-right:8px; background-color: #007bff; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none;">Lihat</a>
                                 @else
-                                    -
+                                    <span style="margin-right:8px;">-</span>
                                 @endif
                             </td>
                             <td>

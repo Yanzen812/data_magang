@@ -29,6 +29,7 @@ Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
     Route::post('/guru', [AdminController::class, 'store_guru'])->name('guru.store');
     Route::put('/guru/{id}', [AdminController::class, 'update_guru'])->name('guru.update');
     Route::delete('/guru/{id}', [AdminController::class, 'destroy_guru'])->name('guru.destroy');
+    Route::post('/guru/assign-group', [AdminController::class, 'assign_group'])->name('guru.assign_group');
 
     Route::get('/surat', [AdminController::class, 'surat'])->name('surat');
     Route::get('/penilaian', [AdminController::class, 'penilaian'])->name('penilaian');
