@@ -37,13 +37,13 @@
                             <td>{{ $penilaian->firstItem() + $index }}</td>
                             <td>{{ $row->nama }}</td>
                             <td>{{ $row->asal_sekolah }}</td>
-                            <td>{{ $row->nama_pembimbing ?? 'N/A' }}</td>
+                            <td>{{ $row->pembimbing_siswa_nama ?? $row->nama_pembimbing ?? 'N/A' }}</td>
                             <td>
                                 @if($row->id)
-                                    <button class="btn btn-sm btn-primary" onclick="openEditModal({{ $row->id }}, {{ $row->siswa_id }}, {{ $row->id_guru }}, '{{ $row->nama }}', '{{ $row->asal_sekolah }}', {{ $row->kedisipinan }}, {{ $row->kerja_sama }}, {{ $row->responsibilitas }})">Edit Nilai</button>
+                                    <button class="btn btn-sm btn-primary" onclick="openEditModal({{ $row->id }}, {{ $row->siswa_id }}, {{ $row->id_guru }}, {{ $row->pembimbing_siswa_id }}, '{{ $row->nama }}', '{{ $row->asal_sekolah }}', {{ $row->kedisipinan }}, {{ $row->kerja_sama }}, {{ $row->responsibilitas }})">Edit Nilai</button>
                                     <button class="btn btn-sm btn-danger" onclick="openDeleteConfirm({{ $row->id }}, '{{ $row->nama }}')">Hapus</button>
                                 @else
-                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#nilaiModal" data-siswa-id="{{ $row->siswa_id }}" data-nama="{{ $row->nama }}" data-sekolah="{{ $row->asal_sekolah }}">Tambah Nilai</button>
+                                    <button class="btn btn-sm btn-success" onclick="openTambahModal({{ $row->siswa_id }}, {{ $row->pembimbing_siswa_id }}, '{{ $row->nama }}', '{{ $row->asal_sekolah }}')">Tambah Nilai</button>
                                 @endif
                             </td>
                         </tr>
@@ -259,12 +259,30 @@
 <script>
     let deleteIdToConfirm = null;
 
-    // Open Edit Modal/Popup
-    function openEditModal(id, siswaId, guruId, nama, sekolah, kedisipinan, kerjaSama, responsibilitas) {
+    // Open Tambah Modal untuk siswa baru
+    function openTambahModal(siswaId, pembimbingId, nama, sekolah) {
         document.getElementById('nama').value = nama;
         document.getElementById('sekolah').value = sekolah;
         document.getElementById('siswaId').value = siswaId;
-        document.getElementById('guru').value = guruId;
+        document.getElementById('guru').value = pembimbingId || '';
+        document.getElementById('kedisipinan').value = '';
+        document.getElementById('kerja_sama').value = '';
+        document.getElementById('responsibilitas').value = '';
+        document.getElementById('formNilai').action = '/penilaian';
+        document.getElementById('methodField').innerHTML = '';
+
+        // Show modal using Bootstrap
+        const modal = new bootstrap.Modal(document.getElementById('nilaiModal'));
+        modal.show();
+    }
+
+    // Open Edit Modal/Popup
+    function openEditModal(id, siswaId, guruId, pembimbingId, nama, sekolah, kedisipinan, kerjaSama, responsibilitas) {
+        document.getElementById('nama').value = nama;
+        document.getElementById('sekolah').value = sekolah;
+        document.getElementById('siswaId').value = siswaId;
+        // Use guru from penilaian, or fallback to siswa's pembimbing
+        document.getElementById('guru').value = guruId || pembimbingId || '';
         document.getElementById('kedisipinan').value = kedisipinan;
         document.getElementById('kerja_sama').value = kerjaSama;
         document.getElementById('responsibilitas').value = responsibilitas;

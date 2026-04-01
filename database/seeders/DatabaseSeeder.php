@@ -35,9 +35,16 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        
+
 
         $pembimbing = Pembimbing::factory()->count(5)->create();
+
+        // Assign pembimbing to each siswa first
+        $siswa->each(function ($s) use ($pembimbing) {
+            $s->update([
+                'id_pembimbing' => $pembimbing->random()->id,
+            ]);
+        });
 
         $siswa->each(function ($s) {
             Absensi::factory()->count(rand(5, 10))->create([
@@ -51,15 +58,13 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        foreach ($pembimbing as $guru) {
-            $randomSiswa = $siswa->random(rand(3, 5));
-            foreach ($randomSiswa as $s) {
-                Penilaian::factory()->create([
-                    'id_guru' => $guru->id,
-                    'id_siswa' => $s->id,
-                ]);
-            }
-        }
+        // Create penilaian using siswa's assigned pembimbing
+        $siswa->each(function ($s) {
+            Penilaian::factory()->create([
+                'id_guru' => $s->id_pembimbing,
+                'id_siswa' => $s->id,
+            ]);
+        });
 
         $siswa->each(function ($s) use ($pembimbing) {
             Surat_pengantar::factory()->create([

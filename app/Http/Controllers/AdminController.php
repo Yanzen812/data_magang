@@ -215,15 +215,18 @@ class AdminController extends Controller
 
     public function penilaian(Request $request)
     {
-        $query = DB::table('penilaian as p')
-            ->join('siswa as s', 's.id', '=', 'p.id_siswa')
+        $query = DB::table('siswa as s')
+            ->leftJoin('penilaian as p', 's.id', '=', 'p.id_siswa')
             ->leftJoin('pembimbing as pb', 'pb.id', '=', 'p.id_guru')
+            ->leftJoin('pembimbing as pb_siswa', 'pb_siswa.id', '=', 's.id_pembimbing')
             ->select(
                 'p.id',
                 's.id as siswa_id',
                 's.nama',
                 's.asal_sekolah',
                 'pb.nama_pembimbing',
+                'pb_siswa.id as pembimbing_siswa_id',
+                'pb_siswa.nama_pembimbing as pembimbing_siswa_nama',
                 'p.id_guru',
                 'p.kedisipinan',
                 'p.kerja_sama',

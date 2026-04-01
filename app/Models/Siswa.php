@@ -19,7 +19,13 @@ class Siswa extends Model
         'asal_sekolah',
         'periode',
         'jenis_kelamin',
+        'id_pembimbing',
     ];
+
+    public function pembimbing()
+    {
+        return $this->belongsTo(Pembimbing::class, 'id_pembimbing', 'id');
+    }
 
     public function absensi()
     {
