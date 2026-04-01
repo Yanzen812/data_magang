@@ -12,6 +12,7 @@ Route::post('/', [SessionController::class, 'login'])->name('login_proses');
 Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
 
 // Admin routes (requires admin role)
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/siswa', [SiswaController::class, 'siswa'])->name('siswa');
@@ -32,14 +33,16 @@ Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
     Route::post('/guru/assign-group', [AdminController::class, 'assign_group'])->name('guru.assign_group');
 
     Route::get('/surat', [AdminController::class, 'surat'])->name('surat');
+    Route::put('/surat/{id}', [AdminController::class, 'update_surat'])->name('surat.update');
     Route::get('/penilaian', [AdminController::class, 'penilaian'])->name('penilaian');
     Route::post('/penilaian', [AdminController::class, 'store_penilaian'])->name('penilaian.store');
     Route::put('/penilaian/{id}', [AdminController::class, 'update_penilaian'])->name('penilaian.update');
     Route::delete('/penilaian/{id}', [AdminController::class, 'destroy_penilaian'])->name('penilaian.destroy');
+});
 
 
 // Siswa routes (requires siswa role)
-// Route::middleware(['auth', 'role:siswa'])->group(function () {
+Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/absensi-siswa', [SiswaController::class, 'absensi_siswa'])->name('absensi_siswa');
     Route::post('/absensi-siswa', [SiswaController::class, 'store_absensi_siswa'])->name('absensi_siswa.store');
 
@@ -54,5 +57,5 @@ Route::post('/logout', [SessionController::class, 'logout'])->name('logout');
     Route::get('/profile', [SiswaController::class, 'profile'])->name('profile');
     Route::post('/profile/update-profil', [SiswaController::class, 'update_profil'])->name('profile.update_profil');
     Route::post('/profile/update-password', [SiswaController::class, 'update_password'])->name('profile.update_password');
-// });
+});
 

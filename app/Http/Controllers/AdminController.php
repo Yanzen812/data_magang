@@ -32,7 +32,7 @@ class AdminController extends Controller
             'request' => $request,
         ]);
     }
-        
+
     public function kegiatan(Request $request)
     {
         $query = DB::table('kegiatan_harian as k')
@@ -126,7 +126,7 @@ class AdminController extends Controller
             'asal_sekolah' => 'nullable|string|max:255',
             'kontak' => 'nullable|string|max:100',
         ]);
-        
+
         DB::table('pembimbing')->insert($data);
 
         return redirect()->route('guru')->with('success', 'Data guru pembimbing berhasil ditambahkan');
@@ -139,9 +139,9 @@ class AdminController extends Controller
             'asal_sekolah' => 'nullable|string|max:255',
             'kontak' => 'nullable|string|max:100',
         ]);
-        
+
         DB::table('pembimbing')->where('id', $id)->update($data);
-        
+
         return redirect()->route('guru')->with('success', 'Data guru pembimbing berhasil diperbarui');
     }
 
@@ -172,6 +172,10 @@ class AdminController extends Controller
             });
         }
 
+        if ($status = $request->input('status')) {
+            $query->where('sp.status', $status);
+        }
+
         $surat = $query
             ->orderBy('sp.created_at', 'DESC')
             ->paginate(10)
@@ -181,6 +185,32 @@ class AdminController extends Controller
             'surat' => $surat,
             'request' => $request,
         ]);
+    }
+
+    public function update_surat(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,verified,rejected',
+        ]);
+
+        try {
+            DB::table('surat_pengantar')
+                ->where('id', $id)
+                ->update([
+                    'status' => $validated['status'],
+                    'updated_at' => now(),
+                ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status surat berhasil diperbarui',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui status surat: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function penilaian(Request $request)
@@ -194,6 +224,7 @@ class AdminController extends Controller
                 's.nama',
                 's.asal_sekolah',
                 'pb.nama_pembimbing',
+                'p.id_guru',
                 'p.kedisipinan',
                 'p.kerja_sama',
                 'p.responsibilitas',
@@ -213,44 +244,60 @@ class AdminController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.penilaian.index', [
+        $pembimbing = DB::table('pembimbing')->select('id', 'nama_pembimbing')->get();
+
+        return view('admin.penilaian', [
             'penilaian' => $penilaian,
+            'pembimbing' => $pembimbing,
             'request' => $request,
         ]);
     }
 
     public function store_penilaian(Request $request)
     {
-        $data = $request->validate([
-            'id_siswa' => 'required|integer|exists:siswa,id',
-            'id_guru' => 'required|integer|exists:pembimbing,id',
-            'kedisipinan' => 'required|integer|min:1|max:100',
-            'kerja_sama' => 'required|integer|min:1|max:100',
-            'responsibilitas' => 'required|integer|min:1|max:100',
-        ]);
+        try {
+            $data = $request->validate([
+                'id_siswa' => 'required|integer|exists:siswa,id',
+                'id_guru' => 'required|integer|exists:pembimbing,id',
+                'kedisipinan' => 'required|integer|min:1|max:100',
+                'kerja_sama' => 'required|integer|min:1|max:100',
+                'responsibilitas' => 'required|integer|min:1|max:100',
+            ]);
 
-        // Calculate nilai_akhir as average
-        $data['nilai_akhir'] = ($data['kedisipinan'] + $data['kerja_sama'] + $data['responsibilitas']) / 3;
+            // Calculate nilai_akhir as average
+            $data['nilai_akhir'] = ($data['kedisipinan'] + $data['kerja_sama'] + $data['responsibilitas']) / 3;
 
-        DB::table('penilaian')->insert($data);
+            DB::table('penilaian')->insert($data);
 
-        return redirect()->route('penilaian')->with('success', 'Data penilaian berhasil ditambahkan');
+            return redirect()->route('penilaian')->with('success', 'Data penilaian berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan penilaian: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function update_penilaian(Request $request, $id)
     {
-        $data = $request->validate([
-            'kedisipinan' => 'required|integer|min:1|max:100',
-            'kerja_sama' => 'required|integer|min:1|max:100',
-            'responsibilitas' => 'required|integer|min:1|max:100',
-        ]);
+        try {
+            $data = $request->validate([
+                'kedisipinan' => 'required|integer|min:1|max:100',
+                'kerja_sama' => 'required|integer|min:1|max:100',
+                'responsibilitas' => 'required|integer|min:1|max:100',
+            ]);
 
-        // Calculate nilai_akhir as average
-        $data['nilai_akhir'] = ($data['kedisipinan'] + $data['kerja_sama'] + $data['responsibilitas']) / 3;
+            // Calculate nilai_akhir as average
+            $data['nilai_akhir'] = ($data['kedisipinan'] + $data['kerja_sama'] + $data['responsibilitas']) / 3;
+            $data['updated_at'] = now();
 
-        DB::table('penilaian')->where('id', $id)->update($data);
-        
-        return redirect()->route('penilaian')->with('success', 'Data penilaian berhasil diperbarui');
+            $updated = DB::table('penilaian')->where('id', $id)->update($data);
+
+            if ($updated) {
+                return redirect()->route('penilaian')->with('success', 'Data penilaian berhasil diperbarui');
+            } else {
+                return redirect()->back()->with('error', 'Data penilaian tidak ditemukan')->withInput();
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memperbarui penilaian: ' . $e->getMessage())->withInput();
+        }
     }
 
     public function destroy_penilaian($id)
